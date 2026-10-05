@@ -1,0 +1,7 @@
+const birds = [
+  { name:"Cuckoo",   sci:"Cuculus canorus",  emoji:"🕊️", sound:"audio/cuckoo.mp3" },
+  { name:"Barn Owl", sci:"Tyto alba",        emoji:"🦉", sound:"audio/owl.mp3" },
+  { name:"Parrot",   sci:"Psittaciformes",   emoji:"🦜", sound:"audio/parrot.mp3" },
+  { name:"Eagle",    sci:"Aquila chrysaetos",emoji:"🦅", sound:"audio/eagle.mp3" },
+  { name:"Duck",     sci:"Anas platyrhynchos",emoji:"🦆", sound:"audio/duck.mp3" },
+];
