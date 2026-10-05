@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  birds-app:
+    build: .
+    container_name: birds-sounds-app
+    ports:
+      - "8080:80"
+    restart: unless-stopped
