@@ -1,0 +1,21 @@
+
+---
+
+## 🚀 Push to GitHub (Step-by-Step)
+
+Open your terminal in the project folder and run:
+
+```bash
+# 1. Initialize git
+git init
+
+# 2. Add all files
+git add .
+
+# 3. Commit
+git commit -m "feat: birds with sounds - realtime UI + Docker + Nginx"
+
+# 4. Create repo on GitHub first (via web), then:
+git branch -M main
+git remote add origin https://github.com/<YOUR_USERNAME>/birds-sounds-app.git
+git push -u origin main
