@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🐦 Birds & Their Sounds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0f2027; --bg2:#203a43; --bg3:#2c5364;
+    --glass:rgba(255,255,255,0.08);
+    --border:rgba(255,255,255,0.18);
+    --accent:#00e5ff;
+    --accent2:#ffb300;
+    --text:#eaf6ff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+  body{
+    min-height:100vh;
+    background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--bg3),#1a2a6c);
+    background-size:400% 400%;
+    animation:gradientBG 18s ease infinite;
+    color:var(--text);
+    padding:40px 20px;
+  }
+  @keyframes gradientBG{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  header{text-align:center;margin-bottom:40px;animation:fadeDown 1s ease;}
+  header h1{
+    font-size:clamp(2rem,5vw,3.5rem);
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    font-weight:700;
+    letter-spacing:1px;
+  }
+  header p{opacity:.8;margin-top:10px;font-size:1.05rem;}
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-25px)}to{opacity:1;transform:translateY(0)}}
+
+  .search-wrap{
+    max-width:520px;margin:0 auto 35px;
+    display:flex;justify-content:center;
+  }
+  .search-wrap input{
+    width:100%;padding:14px 20px;border-radius:50px;
+    border:1px solid var(--border);
+    background:var(--glass);
+    backdrop-filter:blur(12px);
+    color:var(--text);font-size:1rem;outline:none;
+    transition:.3s;
+  }
+  .search-wrap input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 20px rgba(0,229,255,.35);
+  }
+  .search-wrap input::placeholder{color:rgba(234,246,255,.5);}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:22px;
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .card{
+    position:relative;
+    background:var(--glass);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px 20px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:transform .35s ease,box-shadow .35s ease,border-color .35s;
+    overflow:hidden;
+    animation:fadeUp .7s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .card::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at top right,rgba(0,229,255,.25),transparent 60%);
+    opacity:0;transition:.4s;
+  }
+  .card:hover{
+    transform:translateY(-8px) scale(1.02);
+    border-color:var(--accent);
+    box-shadow:0 20px 45px rgba(0,229,255,.25);
+  }
+  .card:hover::before{opacity:1;}
+  .emoji{
+    font-size:3.4rem;display:block;margin-bottom:10px;
+    filter:drop-shadow(0 6px 12px rgba(0,0,0,.4));
+    transition:transform .4s;
+  }
+  .card:hover .emoji{transform:scale(1.15) rotate(-6deg);}
+  .card h3{font-size:1.25rem;margin-bottom:4px;font-weight:600;}
+  .card .sci{font-size:.8rem;opacity:.65;font-style:italic;margin-bottom:14px;}
+  .play-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 22px;border-radius:50px;
+    background:linear-gradient(90deg,var(--accent),#0091ea);
+    color:#001018;font-weight:600;border:none;cursor:pointer;
+    transition:.3s;font-size:.9rem;
+  }
+  .play-btn:hover{box-shadow:0 0 25px rgba(0,229,255,.7);transform:scale(1.05);}
+  .card.playing{
+    border-color:var(--accent2);
+    box-shadow:0 0 30px rgba(255,179,0,.5);
+  }
+  .card.playing .play-btn{
+    background:linear-gradient(90deg,var(--accent2),#ff6f00);
+  }
+  .wave{
+    display:none;gap:3px;justify-content:center;align-items:flex-end;
+    height:20px;margin-top:12px;
+  }
+  .card.playing .wave{display:flex;}
+  .wave span{
+    width:4px;background:var(--accent2);border-radius:2px;
+    animation:waveAnim 1s infinite ease-in-out;
+  }
+  .wave span:nth-child(1){animation-delay:0s;}
+  .wave span:nth-child(2){animation-delay:.15s;}
+  .wave span:nth-child(3){animation-delay:.3s;}
+  .wave span:nth-child(4){animation-delay:.45s;}
+  .wave span:nth-child(5){animation-delay:.6s;}
+  @keyframes waveAnim{
+    0%,100%{height:6px}
+    50%{height:20px}
+  }
+  footer{text-align:center;margin-top:60px;opacity:.55;font-size:.85rem;}
+  .no-results{text-align:center;opacity:.7;padding:40px;font-size:1.1rem;display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐦 Birds &amp; Their Sounds</h1>
+  <p>Tap any bird card to hear its real call • Real-time audio playback</p>
+</header>
+
+<div class="search-wrap">
+  <input id="search" type="text" placeholder="🔍 Search a bird... (e.g. Cuckoo, Owl)" />
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="no-results" id="noResults">😕 No bird matched your search.</div>
+</main>
+
+<footer>Made with 💙 using HTML • CSS • JS • Docker • Nginx</footer>
+
+<script>
+/* =========================================================
+   Bird data with REAL audio URLs (public sample sources)
+   ========================================================= */
+const birds = [
+  { name:"Cuckoo",      sci:"Cuculus canorus",  emoji:"🕊️", sound:"https://www.xeno-canto.org/sounds/uploaded/IIXALDIUYM/XC882352-Cuculus%20canorus.mp3" },
+  { name:"Barn Owl",    sci:"Tyto alba",        emoji:"🦉", sound:"https://www.xeno-canto.org/sounds/uploaded/WYHFWVBWQK/XC777900-Barn%20Owl.mp3" },
+  { name:"Peacock",     sci:"Pavo cristatus",   emoji:"🦚", sound:"https://www.xeno-canto.org/sounds/uploaded/IIXALDIUYM/XC882352-Cuculus%20canorus.mp3" },
+  { name:"Parrot",      sci:"Psittaciformes",   emoji:"🦜", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_2c8c8c8f2e.mp3" },
+  { name:"Penguin",     sci:"Spheniscidae",     emoji:"🐧", sound:"https://cdn.pixabay.com/download/audio/2021/08/09/audio_3f9a3c8bcf.mp3" },
+  { name:"Eagle",       sci:"Aquila chrysaetos",emoji:"🦅", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_e3cd2ecf7a.mp3" },
+  { name:"Flamingo",    sci:"Phoenicopterus",   emoji:"🦩", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_1f7f6c3c02.mp3" },
+  { name:"Duck",        sci:"Anas platyrhynchos",emoji:"🦆", sound:"https://cdn.pixabay.com/download/audio/2021/09/06/audio_9d1e6c8e8c.mp3" },
+  { name:"Swan",        sci:"Cygnus olor",      emoji:"🦢", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_f3a8a5b0e1.mp3" },
+  { name:"Rooster",     sci:"Gallus gallus",    emoji:"🐓", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_9b9a7b4c4a.mp3" },
+  { name:"Turkey",      sci:"Meleagris",        emoji:"🦃", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_9b9a7b4c4a.mp3" },
+  { name:"Dove",        sci:"Columbidae",       emoji:"🕊️", sound:"https://cdn.pixabay.com/download/audio/2022/03/15/audio_2c8c8c8f2e.mp3" }
+];
+
+/* ---------- Render cards ---------- */
+const grid = document.getElementById("grid");
+let currentAudio = null;
+let currentCard = null;
+
+function render(list){
+  grid.innerHTML = "";
+  document.getElementById("noResults").style.display = list.length ? "none" : "block";
+
+  list.forEach((b, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.animationDelay = (i * 0.06) + "s";
+    card.innerHTML = `
+      <span class="emoji">${b.emoji}</span>
+      <h3>${b.name}</h3>
+      <div class="sci">${b.sci}</div>
+      <button class="play-btn">▶ Play Sound</button>
+      <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+    `;
+    card.addEventListener("click", () => toggleSound(b, card));
+    grid.appendChild(card);
+  });
+}
+
+function toggleSound(bird, card){
+  const btn = card.querySelector(".play-btn");
+
+  // If same card playing → stop
+  if (currentCard === card && currentAudio && !currentAudio.paused){
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    card.classList.remove("playing");
+    btn.textContent = "▶ Play Sound";
+    currentAudio = null; currentCard = null;
+    return;
+  }
+
+  // Stop any other playing audio
+  if (currentAudio){
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    if (currentCard){
+      currentCard.classList.remove("playing");
+      currentCard.querySelector(".play-btn").textContent = "▶ Play Sound";
+    }
+  }
+
+  const audio = new Audio(bird.sound);
+  audio.volume = 0.9;
+  audio.play().then(()=>{
+    card.classList.add("playing");
+    btn.textContent = "⏸ Pause";
+    currentAudio = audio;
+    currentCard = card;
+  }).catch(err=>{
+    console.warn("Audio play failed:", err);
+    btn.textContent = "⚠ Unavailable";
+    setTimeout(()=> btn.textContent = "▶ Play Sound", 1500);
+  });
+
+  audio.addEventListener("ended", ()=>{
+    card.classList.remove("playing");
+    btn.textContent = "▶ Play Sound";
+    if (currentCard === card){ currentAudio=null; currentCard=null; }
+  });
+}
+
+/* ---------- Search ---------- */
+document.getElementById("search").addEventListener("input", e=>{
+  const q = e.target.value.toLowerCase().trim();
+  const filtered = birds.filter(b =>
+    b.name.toLowerCase().includes(q) || b.sci.toLowerCase().includes(q)
+  );
+  render(filtered);
+});
+
+/* ---------- Init ---------- */
+render(birds);
+</script>
+</body>
+</html>
